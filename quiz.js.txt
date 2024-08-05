@@ -1,0 +1,73 @@
+// script.js
+const questions = [
+    {
+        question: "What is the capital of France?",
+        options: ["Paris", "London", "Delhi", "Madrid"],
+        answer: "Delhi"
+    },
+    {
+        question: "What is 2 * 8 +2?",
+        options: ["3", "20", "18", "6"],
+        answer: "4"
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Earth", "Mars", "Jupiter", "Saturn"],
+        answer: "Mars"
+    }
+];
+
+let currentQuestionIndex = 0;
+let score = 0;
+
+function showQuestion() {
+    const questionContainer = document.getElementById('question-container');
+    const optionsContainer = document.getElementById('options-container');
+    const question = questions[currentQuestionIndex];
+    
+    questionContainer.textContent = question.question;
+    
+    optionsContainer.innerHTML = '';
+    question.options.forEach(option => {
+        const button = document.createElement('button');
+        button.textContent = option;
+        button.classList.add('option');
+        button.onclick = () => checkAnswer(option);
+        optionsContainer.appendChild(button);
+    });
+}
+
+function checkAnswer(selectedOption) {
+    const question = questions[currentQuestionIndex];
+    if (selectedOption === question.answer) {
+        score++;
+    }
+    currentQuestionIndex++;
+    
+    if (currentQuestionIndex < questions.length) {
+        showQuestion();
+    } else {
+        showResults();
+    }
+}
+
+function showResults() {
+    const quizContainer = document.getElementById('quiz-container');
+    const resultContainer = document.getElementById('result-container');
+    
+    resultContainer.textContent = `You scored ${score} out of ${questions.length}`;
+    quizContainer.querySelector('#question-container').style.display = 'none';
+    quizContainer.querySelector('#options-container').style.display = 'none';
+    quizContainer.querySelector('#next-button').style.display = 'none';
+}
+
+document.getElementById('next-button').addEventListener('click', () => {
+    if (currentQuestionIndex < questions.length) {
+        showQuestion();
+    } else {
+        showResults();
+    }
+});
+
+// Initialize the quiz
+showQuestion();
